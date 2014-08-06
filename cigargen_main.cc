@@ -16,10 +16,10 @@ int main() {
   std::string reference = "ACTGCTGCCTGCAAAAAAAAAAA";
   std::string query = "AGTGTG";
 
-  reference = "ACGTATGC";
-  query = "ACGATGC";
-  query = "ACGTTGC";
-  query = "GTATC";
+//  reference = "ACGTATGC";
+//  query = "ACGATGC";
+//  query = "ACGTTGC";
+//  query = "GTATC";
 
   std::string cigar;
   GenerateCigar((char *) query.c_str(), query.size(), (char *) reference.c_str(), reference.size(), &cigar);

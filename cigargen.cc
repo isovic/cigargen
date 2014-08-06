@@ -2,7 +2,7 @@
  * cigargen.cc
  *
  *  Created on: Aug 6, 2014
- *      Author: ivan
+ *      Author: Ivan Sovic
  */
 
 #include "cigargen.h"
@@ -64,7 +64,6 @@ int GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t 
   }
   current_traceback_column = max_score_index;
 
-//  std::string long_cigar = "";
   std::stringstream cigar_stream;
   std::string cigar = "";
 
@@ -86,21 +85,17 @@ int GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t 
     }
 
     if (dp_traceback[current_traceback_row][current_traceback_column] == 0) {
-//      long_cigar = std::string("M") + long_cigar;
       current_traceback_row -= 1;
       current_traceback_column -= 1;
     }
     else if (dp_traceback[current_traceback_row][current_traceback_column] == 1) {
-//      long_cigar = std::string("X") + long_cigar;
       current_traceback_row -= 1;
       current_traceback_column -= 1;
     }
     else if (dp_traceback[current_traceback_row][current_traceback_column] == 2) {
-//      long_cigar = std::string("I") + long_cigar;
       current_traceback_row -= 1;
     }
     else if (dp_traceback[current_traceback_row][current_traceback_column] == 3) {
-//      long_cigar = std::string("D") + long_cigar;
       current_traceback_column -= 1;
     }
 
@@ -114,10 +109,12 @@ int GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t 
   if (ret_cigar != NULL)
     *ret_cigar = cigar;
 
+//  Verbose(stdout, query, query_length, reference, reference_length, cigar, dp_matrix, dp_traceback);
+
   return 0;
 }
 
-void Verbose(FILE *fp, char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string ret_cigar, std::vector<std::vector<int32_t> > &dp_matrix, std::vector<std::vector<uint8_t> > &dp_traceback) {
+void Verbose(FILE *fp, char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string &ret_cigar, std::vector<std::vector<int32_t> > &dp_matrix, std::vector<std::vector<uint8_t> > &dp_traceback) {
   fprintf (fp, "%3c", ' ');
   for (uint32_t i=0; i<=reference_length; i++) {
     if (i > 0)
