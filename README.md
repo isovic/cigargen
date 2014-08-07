@@ -28,7 +28,7 @@ Output of the above code snippet should be:
   Alignment length: 10
 ```
 
-Detailed description of parameters can be found in the cigargen.h file.
+Detailed description of parameters can be found in the `cigargen.h` file.
 
 Copyright Ivan Sovic, 2014.
 Licence type: MIT.
