@@ -4,7 +4,8 @@ Generates "Compact Idiosyncratic Gapped Alignment Report" (CIGAR) format strings
 
 This function is a basic implementation, which is quadratic in both time and memory.
 
-Example usage is given in the cigargen_main.cc file:
+Example usage is given in the `cigargen_main.cc` file:
+```
   std::string reference = "ACTGCTGCCTGCAAAAAAAAAAA";
   std::string query = "AGTGTGCCCT";
   std::string cigar;
@@ -17,13 +18,15 @@ Example usage is given in the cigargen_main.cc file:
   printf ("Returned CIGAR: %s\n", cigar.c_str());
   printf ("Alignment: %s\n", alignment.c_str());
   printf ("Alignment length: %d\n", alignment_length);
-
+```
 Output of the above code snippet should be:
-Reference sequence:	ACTGCTGCCTGCAAAAAAAAAAA
-Query sequence:		AGTGTGCCCT
-Returned CIGAR: 1M1X2M1D2M1I3M
-Alignment: AxTG-TG+CCT
-Alignment length: 10
+```
+  Reference sequence:	ACTGCTGCCTGCAAAAAAAAAAA
+  Query sequence:		AGTGTGCCCT
+  Returned CIGAR: 1M1X2M1D2M1I3M
+  Alignment: AxTG-TG+CCT
+  Alignment length: 10
+```
 
 Detailed description of parameters can be found in the cigargen.h file.
 
