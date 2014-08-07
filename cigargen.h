@@ -63,9 +63,10 @@ const char kTypeToSymbol[] = {'M', 'X', 'I', 'D'};
 // @param reference pointer to the C-style string of nucleotide characters ('A', 'C', 'T', 'G'; although it should work for non-nucleic characters also).
 // @param reference_length length of the reference sequence.
 // @param ret_cigar if NULL, the CIGAR string will not be returned, only the alignment length. The resulting CIGAR string consists of 4 characters (and their appropriate counts): 'M' for match, 'X' for mismatch, 'I' for insertion and 'D' for deletion.
+// @param ret_alignment_length return the length of alignment.
 // @param ret_alignment not required, and has default value of NULL. If non-NULL, the resulting alignment will be generated. This alignment has one special character '+' which denotes that the query has an insertion at that point (reference has a deletion).
-// @return less than 0 if something went wrong, otherwise the length of the optimal alignment.
-int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string *ret_cigar, std::string *ret_alignment=NULL);
+// @return less than 0 if something went wrong otherwise the edit distance.
+int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string *ret_cigar, uint32_t *ret_alignment_length=NULL, std::string *ret_alignment=NULL);
 
 // Prints the matrices to a file stream.
 // @param fp file pointer to the stream where verbose will be output (e.g. stdout).

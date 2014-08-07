@@ -31,7 +31,7 @@
 
 #include "cigargen.h"
 
-int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string *ret_cigar, std::string *ret_alignment) {
+int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string *ret_cigar, uint32_t *ret_alignment_length, std::string *ret_alignment) {
   if (query == NULL || reference == NULL || query_length == 0 || reference_length == 0)
     return -1;
 
@@ -76,11 +76,12 @@ int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint3
   }
 
   // Initialize the traceback column to the index of the highest score, and the traceback row to the last row of the matrix.
-  int32_t current_traceback_row=query_length, current_traceback_column=max_score_index;
+  int32_t current_traceback_row = query_length, current_traceback_column = max_score_index;
 
   std::stringstream cigar_stream;
   std::string cigar = "";
   std::string alignment = "";
+  uint32_t edit_distance = 0;
 
   // Traceback: Find the CIGAR string.
   uint32_t iterations=0, num_insertions=0, type=0, last_type=0, num_same_types=0;
@@ -105,6 +106,9 @@ int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint3
         num_same_types = 1;
       }
     }
+
+    if (type != TYPE_MATCH)
+      edit_distance += 1;
 
     // Accumulate the characters for the alignment, but only if this was asked for (that's why there is
     // the NULL testing). We insert a special character '+' in this implementation, which represents that
@@ -139,12 +143,17 @@ int32_t GenerateCigar(char *query, uint32_t query_length, char *reference, uint3
   else
     Verbose(stdout, query, query_length, reference, reference_length, cigar, dp_matrix, dp_traceback);
 
+  // Return the final alignment length. We need to subtract the number of insertions on the reference because the final
+  // alignment should be shorter than the traceback for this amount.
+  if (ret_alignment_length != NULL)
+    *ret_alignment_length = (iterations - num_insertions);
+
+  // Return the final alignment if required. The alignment.size() value is larger than ret_alignment_length, because
+  // query deletions have not been completely removed, but changed with a special character.
   if (ret_alignment != NULL)
     *ret_alignment = alignment;
 
-  // Return the final alignment. We need to subtract the number of insertions on the reference because the final
-  // alignment should be shorter than the traceback for this amount.
-  return (iterations - num_insertions);
+  return edit_distance;
 }
 
 void Verbose(FILE *fp, char *query, uint32_t query_length, char *reference, uint32_t reference_length, std::string &cigar, std::vector<std::vector<int32_t> > &dp_matrix, std::vector<std::vector<uint8_t> > &dp_traceback) {

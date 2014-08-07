@@ -39,13 +39,15 @@ int main() {
 
   std::string cigar;
   std::string alignment = "";
-  int32_t alignment_length = GenerateCigar((char *) query.c_str(), query.size(), (char *) reference.c_str(), reference.size(), &cigar, &alignment);
+  uint32_t alignment_length = 0;
+  int32_t edit_distance = GenerateCigar((char *) query.c_str(), query.size(), (char *) reference.c_str(), reference.size(), &cigar, &alignment_length, &alignment);
 
   printf ("Reference sequence:\t%s\n", reference.c_str());
   printf ("Query sequence:\t\t%s\n", query.c_str());
   printf ("Returned CIGAR: %s\n", cigar.c_str());
   printf ("Alignment: %s\n", alignment.c_str());
   printf ("Alignment length: %d\n", alignment_length);
+  printf ("Edit distance: %d\n", edit_distance);
 
 	return 0;
 }
